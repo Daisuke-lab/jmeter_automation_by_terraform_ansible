@@ -1,0 +1,7 @@
+- name: Ansible Test Playbook
+  gather_facts: false
+  hosts: aws_ec2 # you can check hosts by inventory list command
+
+  tasks:
+    - name: Run Shell Command
+      command: echo "Hello World"
