@@ -7,6 +7,7 @@ resource "aws_instance" "linux_test" {
   key_name                    = data.aws_key_pair.common.key_name
   tags = {
     usage : "test"
+    os: "linux"
   }
 }
 

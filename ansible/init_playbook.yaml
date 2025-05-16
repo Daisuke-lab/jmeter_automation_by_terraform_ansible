@@ -1,0 +1,49 @@
+- name: Set up Ansible config
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Lookup EC2 instance(s) by tag
+      amazon.aws.ec2_instance_info:
+        filters:
+          "tag:os": "windows"
+          "tag:usage": "test"
+      register: ec2_info
+  
+    - name: print instance_id
+      debug:
+        msg: "{{ ec2_info.instances[0].instance_id }}"
+
+    - name: get the Administrator password
+      community.aws.ec2_win_password:
+        instance_id: '{{ ec2_info.instances[0].instance_id }}'
+        key_file: ~/.ssh/demo.pem
+        wait: true
+      register: password
+
+    - name: print password
+      debug:
+        msg: "{{ password }}"
+
+    - name: Ensure group_vars directory exists
+      file:
+        path: group_vars
+        state: directory
+
+    - name: Create group_vars/linux.yml
+      copy:
+        dest: group_vars/linux.yml
+        content: |
+          ansible_user: ec2-user
+          ansible_ssh_private_key_file: ~/.ssh/demo.pem
+          # allow sudo command
+          ansible_become: true 
+
+    - name: Create group_vars/windows.yml
+      copy:
+        dest: group_vars/windows.yml
+        content: |
+          ansible_user: Administrator
+          ansible_password: {{password.win_password}}
+          ansible_connection: winrm
+          ansible_winrm_transport: ntlm
+          ansible_winrm_server_cert_validation: ignore

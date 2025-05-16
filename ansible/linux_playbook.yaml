@@ -1,0 +1,22 @@
+- name: Ansible Test Playbook
+  gather_facts: false
+  hosts: linux
+  # vars:
+  #   ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Install Java.
+      ansible.builtin.dnf:
+        name: java-17-amazon-corretto
+        state: present
+
+    - name: Download jmeter
+      ansible.builtin.get_url:
+        url: https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.3.tgz
+        dest: /home/ec2-user/jmeter.tgz
+        mode: '0777'
+
+    - name: Extract jmeter
+      ansible.builtin.unarchive:
+        remote_src: true
+        src: /home/ec2-user/jmeter.tgz
+        dest: /home/ec2-user

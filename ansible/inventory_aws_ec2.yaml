@@ -1,6 +1,11 @@
 plugin: amazon.aws.aws_ec2
 regions:
 - us-east-2
+keyed_groups:
+  - key: "tags.os"
+    separator: ""
 filters:
-  # This selects only running instances with tag `Environment` tag set to `dev`.
   tag:usage: test
+  tag:os:
+    - windows
+    - linux

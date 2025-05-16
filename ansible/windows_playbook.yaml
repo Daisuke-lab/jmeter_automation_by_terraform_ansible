@@ -1,0 +1,10 @@
+- name: Ansible Test Playbook
+  gather_facts: false
+  hosts: windows
+  roles:
+    ansible-windows-java
+  tasks:
+    - name: Install Java.
+      ansible.builtin.dnf:
+        name: java-17-amazon-corretto
+        state: present
