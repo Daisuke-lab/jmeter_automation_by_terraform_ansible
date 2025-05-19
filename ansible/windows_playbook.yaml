@@ -1,10 +1,27 @@
 - name: Ansible Test Playbook
   gather_facts: false
   hosts: windows
-  roles:
-    ansible-windows-java
+  vars:
+    jdk_package: jdk17
+    java_major_version: 17.0.2
   tasks:
-    - name: Install Java.
-      ansible.builtin.dnf:
-        name: java-17-amazon-corretto
+    - name: Install Java
+      win_chocolatey:
+        name: openjdk
         state: present
+        version: "17.0.2"
+
+    - name: Create directory structure
+      ansible.windows.win_file:
+        path: C:\temp
+        state: directory
+
+    - name: Download jmeter
+      ansible.windows.win_get_url:
+        url: https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.3.zip
+        dest: C:\temp\apache-jmeter-5.6.3.zip
+
+    - name: Unzip gz log
+      community.windows.win_unzip:
+        src: C:\temp\apache-jmeter-5.6.3.zip
+        dest: C:\temp

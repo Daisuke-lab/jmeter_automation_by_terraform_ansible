@@ -1,9 +1,9 @@
 # Install ansible
 ```
-$ sudo apt update
-$ sudo apt install software-properties-common
-$ sudo add-apt-repository --yes --update ppa:ansible/ansible
-$ sudo apt install ansible
+sudo apt update
+sudo apt install software-properties-common
+sudo add-apt-repository --yes --update ppa:ansible/ansible
+sudo apt install ansible
 ```
 
 ```
@@ -15,6 +15,10 @@ pipx install --include-deps ansible
 # install amazon extension
 ```
 ansible-galaxy collection install amazon.aws
+ansible-galaxy collection install community.aws
+ansible-galaxy collection install chocolatey.chocolatey
+ansible-galaxy collection install ansible.windows
+ansible-galaxy collection install community.windows
 sudo apt install python3-pip
 pip install boto3
 ```
@@ -24,8 +28,9 @@ ansible-inventory -i inventory_aws_ec2.yaml --graph
 
 # check command
 ```
-ansible-playbook init_playbook.yaml --check
-ansible-playbook -i inventory_aws_ec2.yaml playbook.yaml --check
+ansible-playbook init_playbook.yaml
+ansible-playbook -i inventory_aws_ec2.yaml linux_playbook.yaml
+ansible-playbook -i inventory_aws_ec2.yaml windows_playbook.yaml
 ```
 
 ## get windows passowrd
